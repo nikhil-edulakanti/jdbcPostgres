@@ -52,7 +52,18 @@ public class CarRepo {
     }
 
     public List<Cars> getfilter(int a, int b) {
-        System.out.println("Returning the filtered list..");
-        return new ArrayList<>();
+        String query = "select * from cars where year between " + a + " and " + b;
+
+
+        return jdbc.query(query,(ResultSet rs, int rowNum)-> {
+        Cars car = new Cars();
+        car.setId(rs.getInt("id"));
+        car.setMake(rs.getString("make"));
+        car.setModel(rs.getString("model"));
+        car.setVin(rs.getString("vin"));
+        car.setMileage(rs.getInt("mileage"));
+        car.setYear(rs.getInt("year"));
+        return car;
+    });
     }
 }
