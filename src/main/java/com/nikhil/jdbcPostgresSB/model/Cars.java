@@ -1,13 +1,20 @@
 package com.nikhil.jdbcPostgresSB.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+@Entity
 @Component
 @Scope("prototype")
 public class Cars {
 
+    @Id
+    @GeneratedValue
     private int id;
+
     private String make;
     private String model;
     private String vin;

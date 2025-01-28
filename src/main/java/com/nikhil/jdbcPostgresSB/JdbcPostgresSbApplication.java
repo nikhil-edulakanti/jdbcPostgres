@@ -2,6 +2,10 @@ package com.nikhil.jdbcPostgresSB;
 
 import com.nikhil.jdbcPostgresSB.model.Cars;
 import com.nikhil.jdbcPostgresSB.service.CarService;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
@@ -21,21 +25,43 @@ public class JdbcPostgresSbApplication {
 
 		Cars car = context.getBean(Cars.class);
 
-		car.setId(110);
+		car.setId(111);
 		car.setMake("Nissan");
 		car.setModel("Altima");
-		car.setMileage(85000);
-		car.setVin("NS78901KL5");
-
-
+		car.setMileage(85003);
+		car.setVin("BG4889DL5");
 		car.setYear(2021);
 
+		SessionFactory sf = new Configuration()
+							.addAnnotatedClass(Cars.class)
+							.configure("hibernate.config.xml")
+							.buildSessionFactory();
 
-		CarService service = context.getBean(CarService.class);
+		Session session = sf.openSession();
+		Transaction tx = session.beginTransaction();
+		//session.merge(car);
+
+		Cars c = session.get(Cars.class,101);
+
+		//session.persist(car);
+
+		//tx.commit();
+		session.close();
+		sf.close();
+		System.out.println(c);
+
+
+
+
+
+
+
+
+		//CarService service = context.getBean(CarService.class);
 		//service.addCar(car);
 
-		List <Cars> carsList = service.getCars();
-		System.out.println(carsList);
+		//List <Cars> carsList = service.getCars();
+		//System.out.println(carsList);
 		//List <Cars> carFiltered = service.getSpecific(2018,2020);
 		//System.out.println(carFiltered);
 	}
